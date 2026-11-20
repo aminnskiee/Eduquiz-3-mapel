@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Interaktif - Olahraga, Informatika & Bahasa Inggris</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olahraga: '#10b981', // Emerald
+            informatika: '#3b82f6', // Blue
+            inggris: '#8b5cf6', // Purple
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col font-sans justify-between bg-slate-900 selection:bg-indigo-500 selection:text-white">
+
+  <header class="w-full bg-slate-800/80 backdrop-blur border-b border-slate-700 py-4 px-6 sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg text-white">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+        </div>
+        <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
+          EduQuiz 3 Pelajaran
+        </h1>
+      </div>
+      <button id="restart-btn-header" onclick="resetQuiz()" class="hidden text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-md transition duration-200">
+        <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl">
+      
+      <!-- Screen 1: Selecting Category -->
+      <div id="category-screen" class="bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl text-center space-y-6">
+        <div>
+          <h2 class="text-2xl font-extrabold text-white">Pilih Pelajaran Kuis</h2>
+          <p class="text-slate-400 text-sm mt-1">Uji pengetahuanmu dalam Olahraga, Informatika, atau Bahasa Inggris!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Olahraga Card -->
+          <button onclick="startQuiz('olahraga')" class="group relative bg-slate-900/60 hover:bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-500 p-5 rounded-xl transition duration-300 flex flex-col items-center text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+              <i class="fa-solid fa-futbol"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white group-hover:text-emerald-400 transition">Olahraga</h3>
+              <p class="text-xs text-slate-400 mt-1">10 Soal (PJOK)</p>
+            </div>
+            <!-- High Score Badge -->
+            <div class="mt-2 text-[11px] font-semibold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+              <i class="fa-solid fa-trophy mr-1 text-amber-400"></i> Best: <span id="highscore-olahraga">0</span>
+            </div>
+          </button>
+
+          <!-- Informatika Card -->
+          <button onclick="startQuiz('informatika')" class="group relative bg-slate-900/60 hover:bg-blue-950/40 border border-blue-500/30 hover:border-blue-500 p-5 rounded-xl transition duration-300 flex flex-col items-center text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white group-hover:text-blue-400 transition">Informatika</h3>
+              <p class="text-xs text-slate-400 mt-1">10 Soal (Coding)</p>
+            </div>
+            <!-- High Score Badge -->
+            <div class="mt-2 text-[11px] font-semibold text-blue-400 bg-blue-950/80 px-2.5 py-0.5 rounded-full border border-blue-500/30">
+              <i class="fa-solid fa-trophy mr-1 text-amber-400"></i> Best: <span id="highscore-informatika">0</span>
+            </div>
+          </button>
+
+          <!-- Bahasa Inggris Card -->
+          <button onclick="startQuiz('inggris')" class="group relative bg-slate-900/60 hover:bg-purple-950/40 border border-purple-500/30 hover:border-purple-500 p-5 rounded-xl transition duration-300 flex flex-col items-center text-center space-y-3">
+            <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+              <i class="fa-solid fa-language"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-white group-hover:text-purple-400 transition">Bahasa Inggris</h3>
+              <p class="text-xs text-slate-400 mt-1">10 Soal (Grammar)</p>
+            </div>
+            <!-- High Score Badge -->
+            <div class="mt-2 text-[11px] font-semibold text-purple-400 bg-purple-950/80 px-2.5 py-0.5 rounded-full border border-purple-500/30">
+              <i class="fa-solid fa-trophy mr-1 text-amber-400"></i> Best: <span id="highscore-inggris">0</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="pt-2 border-t border-slate-700 space-y-3">
+          <button onclick="startQuiz('semua')" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-shuffle"></i>
+            <span>Mainkan Mode Campuran (30 Soal)</span>
+          </button>
+          
+          <div class="text-xs text-slate-400 flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-trophy text-amber-400"></i>
+            <span>High Score Mode Campuran: <strong id="highscore-semua" class="text-indigo-400">0</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Quiz Playing -->
+      <div id="quiz-screen" class="hidden bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl space-y-6">
+        <!-- Status Bar -->
+        <div class="flex justify-between items-center border-b border-slate-700 pb-4">
+          <div class="flex items-center space-x-2">
+            <span id="category-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-700 text-slate-200">
+              Kategori
+            </span>
+            <span id="question-count" class="text-xs text-slate-400 font-medium">Soal 1/10</span>
+          </div>
+
+          <!-- Timer -->
+          <div class="flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700">
+            <i class="fa-solid fa-clock text-amber-400 text-sm"></i>
+            <span id="timer" class="text-sm font-mono font-bold text-amber-400">20s</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+
+        <!-- Question Title -->
+        <div class="space-y-2">
+          <h3 id="question-text" class="text-lg md:text-xl font-bold text-white leading-snug">
+            Pertanyaan akan muncul di sini...
+          </h3>
+        </div>
+
+        <!-- Options Container -->
+        <div id="options-container" class="space-y-3">
+          <!-- Dynamically populated options -->
+        </div>
+
+        <!-- Feedback & Explanation (Hidden initially) -->
+        <div id="explanation-box" class="hidden p-4 rounded-xl text-sm leading-relaxed border transition">
+          <p id="explanation-text"></p>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="flex justify-end pt-2">
+          <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-6 rounded-lg transition duration-200 flex items-center space-x-2">
+            <span>Selanjutnya</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Screen 3: Result Screen -->
+      <div id="result-screen" class="hidden bg-slate-800 p-6 md:p-8 rounded-2xl border border-slate-700 shadow-xl text-center space-y-6">
+        <div class="space-y-2">
+          <div class="inline-flex p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-indigo-400 text-4xl mb-2 relative">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-white">Kuis Selesai!</h2>
+          <p class="text-slate-400 text-sm">Berikut adalah ringkasan performa kuis Anda</p>
+        </div>
+
+        <!-- Score Board -->
+        <div class="bg-slate-900/80 p-6 rounded-xl border border-slate-700 max-w-sm mx-auto space-y-3 relative overflow-hidden">
+          <!-- New Record Badge -->
+          <div id="new-record-badge" class="hidden absolute top-3 right-3 bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider animate-pulse">
+            <i class="fa-solid fa-star mr-1"></i>Rekor Baru!
+          </div>
+
+          <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Skor Anda</p>
+          <div class="text-5xl font-extrabold text-indigo-400" id="final-score">0</div>
+          <p id="score-message" class="text-sm font-medium text-slate-300">Kerja bagus!</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto text-left">
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700 flex items-center space-x-3">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+            <div>
+              <p class="text-xs text-slate-400">Benar</p>
+              <p id="correct-count" class="font-bold text-white">0 Soal</p>
+            </div>
+          </div>
+          <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-700 flex items-center space-x-3">
+            <i class="fa-solid fa-circle-xmark text-rose-400 text-xl"></i>
+            <div>
+              <p class="text-xs text-slate-400">Salah/Habis Waktu</p>
+              <p id="wrong-count" class="font-bold text-white">0 Soal</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4 border-t border-slate-700">
+          <button onclick="resetQuiz()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 px-6 rounded-xl transition flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Coba Lagi</span>
+          </button>
+          <button onclick="showReview()" id="review-btn" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-2.5 px-6 rounded-xl transition flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Lihat Pembahasan</span>
+          </button>
+        </div>
+
+        <!-- Review Section (Hidden by default) -->
+        <div id="review-section" class="hidden text-left pt-6 border-t border-slate-700 space-y-4 max-h-80 overflow-y-auto pr-2">
+          <h3 class="font-bold text-white text-base">Pembahasan Soal:</h3>
+          <div id="review-list" class="space-y-3"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="w-full text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+    <p>&copy; 2026 EduQuiz - Pembelajaran Interaktif 3 Mata Pelajaran</p>
+  </footer>
+
+  <script>
+    // Data Soal Kuis (10 Soal per Kategori)
+    const questionsBank = {
+      olahraga: [
+        {
+          question: "Berapa jumlah pemain dalam satu tim bola basket yang berada di lapangan?",
+          options: ["11 Orang", "5 Orang", "6 Orang", "7 Orang"],
+          answer: 1,
+          explanation: "Satu tim bola basket terdiri dari 5 pemain utama di lapangan dalam satu pertandingan aktif."
+        },
+        {
+          question: "Induk organisasi bulu tangkis di Indonesia dikenal dengan singkatan...",
+          options: ["PSSI", "PBVSI", "PBSI", "PERBASI"],
+          answer: 2,
+          explanation: "PBSI (Persatuan Bulutangkis Seluruh Indonesia) adalah organisasi resmi yang menaungi bulu tangkis di Indonesia."
+        },
+        {
+          question: "Gaya dada dalam renang sering juga dinamakan sebagai gaya...",
+          options: ["Gaya Kupu-kupu", "Gaya Bebas", "Gaya Katak", "Gaya Punggung"],
+          answer: 2,
+          explanation: "Gaya dada dinamakan gaya katak karena gerakan tangannya meniru gerakan katak saat berenang."
+        },
+        {
+          question: "Panjang lintasan standar pada lari jarak pendek (sprint) di ajang resmi adalah...",
+          options: ["100 meter", "500 meter", "1000 meter", "1500 meter"],
+          answer: 0,
+          explanation: "Lari sprint resmi menggunakan nomor 100m, 200m, dan 400m."
+        },
+        {
+          question: "Ukuran standar lama permainan sepak bola (tanpa perpanjangan waktu) adalah...",
+          options: ["2 x 30 menit", "2 x 40 menit", "2 x 45 menit", "2 x 50 menit"],
+          answer: 2,
+          explanation: "Waktu normal pertandingan sepak bola adalah 2 babak x 45 menit (total 90 menit)."
+        },
+        {
+          question: "Pemain sepak bola yang bertugas menjaga gawang dari kebobolan dinamakan...",
+          options: ["Striker", "Midfielder", "Goalkeeper", "Defender"],
+          answer: 2,
+          explanation: "Goalkeeper (kiper) adalah satu-satunya pemain yang boleh memegang bola di dalam area penalti."
+        },
+        {
+          question: "Tembakan bebas setelah pelanggaran dalam olahraga bola basket bernilai...",
+          options: ["1 poin", "2 poin", "3 poin", "4 poin"],
+          answer: 0,
+          explanation: "Lemparan bebas (free throw) bernilai 1 poin per tembakan yang berhasil masuk."
+        },
+        {
+          question: "Teknik memukul bola pada olahraga bola voli untuk mengawali permainan disebut...",
+          options: ["Smash", "Blocking", "Passing", "Service"],
+          answer: 3,
+          explanation: "Service adalah pukulan awal untuk memulai reli dalam permainan bola voli."
+        },
+        {
+          question: "Alat pemukul yang digunakan pada olahraga tenis meja biasa dinamakan...",
+          options: ["Bet", "Raket", "Stick", "Club"],
+          answer: 0,
+          explanation: "Pemukul pada olahraga tenis meja (pingpong) dinamakan bet."
+        },
+        {
+          question: "Jumlah babak/set kemenangan standar dalam pertandingan bulu tangkis adalah...",
+          options: ["Best of 3", "Best of 5", "Best of 7", "Single Match"],
+          answer: 0,
+          explanation: "Pertandingan bulu tangkis dimainkan dengan sistem Best of 3 (mencari 2 set kemenangan)."
+        }
+      ],
+      informatika: [
+        {
+          question: "Manakah yang merupakan bahasa pemrograman web client-side untuk interaktivitas?",
+          options: ["Python", "JavaScript", "SQL", "C++"],
+          answer: 1,
+          explanation: "JavaScript digunakan di browser untuk membuat halaman web interaktif."
+        },
+        {
+          question: "Komponen keras (hardware) yang berfungsi sebagai otak utama dari komputer adalah...",
+          options: ["RAM", "Harddisk", "CPU", "Power Supply"],
+          answer: 2,
+          explanation: "CPU (Central Processing Unit) memproses semua instruksi logika dan perhitungan data."
+        },
+        {
+          question: "Singkatan dari URL dalam dunia jaringan/internet adalah...",
+          options: ["Uniform Resource Locator", "Universal Routing Link", "United Radio Language", "User Reaction Logic"],
+          answer: 0,
+          explanation: "URL singkatan dari Uniform Resource Locator, yaitu alamat unik untuk web page/file di internet."
+        },
+        {
+          question: "Manakah struktur data yang menerapkan prinsip FIFO (First In, First Out)?",
+          options: ["Stack", "Queue", "Tree", "Graph"],
+          answer: 1,
+          explanation: "Queue (Antrean) menggunakan prinsip FIFO di mana elemen yang masuk pertama akan keluar pertama."
+        },
+        {
+          question: "Tag HTML yang digunakan untuk membuat judul utama paling besar pada dokumen web adalah...",
+          options: ["<h6>", "<header>", "<h1>", "<title>"],
+          answer: 2,
+          explanation: "<h1> digunakan untuk heading tingkatan utama/terbesar dalam standar HTML."
+        },
+        {
+          question: "Memori utama komputer yang bersifat sementara (volatile) dinamakan...",
+          options: ["ROM", "RAM", "SSD", "Flashdisk"],
+          answer: 1,
+          explanation: "RAM (Random Access Memory) menyimpan data aplikasi yang sedang berjalan secara sementara."
+        },
+        {
+          question: "Protokol standar aman yang digunakan untuk enkripsi komunikasi web HTTP adalah...",
+          options: ["HTTPS", "FTP", "SSH", "SMTP"],
+          answer: 0,
+          explanation: "HTTPS (HTTP Secure) mengamankan data enkripsi lalu lintas web menggunakan SSL/TLS."
+        },
+        {
+          question: "Struktur data Stack bekerja menggunakan prinsip penanganan data yaitu...",
+          options: ["FIFO (First In First Out)", "LIFO (Last In First Out)", "LILO (Last In Last Out)", "Random Access"],
+          answer: 1,
+          explanation: "Stack menggunakan prinsip LIFO (elemen terakhir yang masuk akan pertama dikeluarkan)."
+        },
+        {
+          question: "Bahasa stylesheet yang digunakan untuk mengatur desain dan tata letak halaman web adalah...",
+          options: ["HTML", "CSS", "PHP", "SQL"],
+          answer: 1,
+          explanation: "CSS (Cascading Style Sheets) mengatur tata letak, warna, gaya visual halaman web."
+        },
+        {
+          question: "Istilah untuk proses pencarian dan perbaikan kesalahan (error) dalam program komputer adalah...",
+          options: ["Compiling", "Debugging", "Executing", "Refactoring"],
+          answer: 1,
+          explanation: "Debugging adalah proses melacak dan menghapus bug atau kesalahan program."
+        }
+      ],
+      inggris: [
+        {
+          question: "Choose the correct form: 'She ______ to the library every Wednesday.'",
+          options: ["go", "goes", "went", "going"],
+          answer: 1,
+          explanation: "Subject 'She' (third-person singular) requires verb+s/es ('goes') in Simple Present Tense."
+        },
+        {
+          question: "What is the synonym of the word 'ANCIENT'?",
+          options: ["Modern", "Very Old", "Young", "Clean"],
+          answer: 1,
+          explanation: "'Ancient' means extremely old or belonging to a period of history long ago."
+        },
+        {
+          question: "Select the correct past tense of the verb 'BUY':",
+          options: ["Buyd", "Buying", "Bought", "Buys"],
+          answer: 2,
+          explanation: "'Buy' is an irregular verb. Its Simple Past form is 'Bought'."
+        },
+        {
+          question: "Identify the noun in this sentence: 'The blue car drove fast.'",
+          options: ["Blue", "Car", "Drove", "Fast"],
+          answer: 1,
+          explanation: "'Car' is a noun (person/place/thing). 'Blue' is an adjective, and 'drove' is a verb."
+        },
+        {
+          question: "Complete the sentence: 'If it rains tomorrow, we ______ the match.'",
+          options: ["cancel", "will cancel", "canceled", "canceling"],
+          answer: 1,
+          explanation: "First Conditional structure: If + Simple Present, Will + Verb 1 ('will cancel')."
+        },
+        {
+          question: "What is the antonym of the word 'EXPENSIVE'?",
+          options: ["Cheap", "Costly", "Valuable", "Pricey"],
+          answer: 0,
+          explanation: "'Cheap' is the opposite (antonym) of 'Expensive'."
+        },
+        {
+          question: "Which pronoun best completes this sentence: 'John lost ______ keys.'",
+          options: ["his", "her", "their", "its"],
+          answer: 0,
+          explanation: "The possessive adjective for singular male 'John' is 'his'."
+        },
+        {
+          question: "Choose the correct comparative form: 'This test is ______ than the last one.'",
+          options: ["easy", "easier", "easiest", "more easy"],
+          answer: 1,
+          explanation: "Comparative form of two-syllable adjective ending in 'y' (easy) is 'easier'."
+        },
+        {
+          question: "Identify the correct passive voice: 'The chef cooked the dinner.'",
+          options: ["The dinner is cooked by chef.", "The dinner was cooked by the chef.", "The chef is cooking dinner.", "The dinner cooks chef."],
+          answer: 1,
+          explanation: "Simple past passive: Object + was/were + Verb 3 ('The dinner was cooked by the chef')."
+        },
+        {
+          question: "Select the preposition: 'The cat is sleeping ______ the table.'",
+          options: ["under", "sleep", "softly", "white"],
+          answer: 0,
+          explanation: "'Under' is a preposition of place indicating location relative to something."
+        }
+      ]
+    };
+
+    // App State Variables
+    let currentCategory = '';
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let correctAnswersCount = 0;
+    let userAnswers = [];
+    let timerInterval = null;
+    const TIME_LIMIT = 20; // Diubah ke 20 detik
+    let timeLeft = TIME_LIMIT;
+
+    // Elements
+    const categoryScreen = document.getElementById('category-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const categoryBadge = document.getElementById('category-badge');
+    const questionCount = document.getElementById('question-count');
+    const timerDisplay = document.getElementById('timer');
+    const progressBar = document.getElementById('progress-bar');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const explanationBox = document.getElementById('explanation-box');
+    const explanationText = document.getElementById('explanation-text');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Load High Scores from LocalStorage on initial load
+    document.addEventListener('DOMContentLoaded', updateHighScoreUI);
+
+    function getHighScore(category) {
+      return parseInt(localStorage.getItem(`eduquiz_highscore_${category}`)) || 0;
+    }
+
+    function setHighScore(category, newScore) {
+      localStorage.setItem(`eduquiz_highscore_${category}`, newScore);
+    }
+
+    function updateHighScoreUI() {
+      const categories = ['olahraga', 'informatika', 'inggris', 'semua'];
+      categories.forEach(cat => {
+        const elem = document.getElementById(`highscore-${cat}`);
+        if (elem) {
+          elem.textContent = getHighScore(cat);
+        }
+      });
+    }
+
+    function startQuiz(category) {
+      currentCategory = category;
+
+      // Prepare Question List (Acak soal)
+      if (category === 'semua') {
+        currentQuestions = [
+          ...questionsBank.olahraga,
+          ...questionsBank.informatika,
+          ...questionsBank.inggris
+        ].sort(() => Math.random() - 0.5);
+      } else {
+        currentQuestions = [...questionsBank[category]].sort(() => Math.random() - 0.5);
+      }
+
+      // Reset Variables
+      currentQuestionIndex = 0;
+      score = 0;
+      correctAnswersCount = 0;
+      userAnswers = [];
+
+      // Update Screens
+      categoryScreen.classList.add('hidden');
+      resultScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+      document.getElementById('restart-btn-header').classList.remove('hidden');
+
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      // Clear Previous Timer & State
+      clearInterval(timerInterval);
+      explanationBox.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+
+      const currentQ = currentQuestions[currentQuestionIndex];
+
+      // Badge Styling
+      categoryBadge.textContent = currentQ.category || getQuestionCategory(currentQ);
+      setCategoryBadgeStyle(categoryBadge, currentQ);
+
+      // Meta text & Progress
+      questionCount.textContent = `Soal ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+      const progressPercent = ((currentQuestionIndex) / currentQuestions.length) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Set Question Content
+      questionText.textContent = currentQ.question;
+      optionsContainer.innerHTML = '';
+
+      // Create Options
+      currentQ.options.forEach((optionText, index) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-700/60 text-slate-200 transition duration-200 flex items-center justify-between group`;
+        btn.onclick = () => selectOption(index);
+        btn.id = `option-${index}`;
+        
+        btn.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-600 group-hover:border-indigo-400 flex items-center justify-center text-xs font-bold text-slate-300">
+              ${String.fromCharCode(65 + index)}
+            </span>
+            <span class="text-sm font-medium">${optionText}</span>
+          </div>
+          <i class="option-icon text-lg hidden"></i>
+        `;
+        optionsContainer.appendChild(btn);
+      });
+
+      // Start Timer
+      startTimer();
+    }
+
+    function getQuestionCategory(q) {
+      if (questionsBank.olahraga.some(item => item.question === q.question)) return 'Olahraga';
+      if (questionsBank.informatika.some(item => item.question === q.question)) return 'Informatika';
+      if (questionsBank.inggris.some(item => item.question === q.question)) return 'B. Inggris';
+      return 'Umum';
+    }
+
+    function setCategoryBadgeStyle(badge, q) {
+      const cat = getQuestionCategory(q);
+      badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ";
+      if (cat === 'Olahraga') badge.className += "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+      else if (cat === 'Informatika') badge.className += "bg-blue-500/20 text-blue-400 border border-blue-500/30";
+      else badge.className += "bg-purple-500/20 text-purple-400 border border-purple-500/30";
+    }
+
+    function startTimer() {
+      timeLeft = TIME_LIMIT;
+      timerDisplay.textContent = `${timeLeft}s`;
+      timerDisplay.classList.remove('text-rose-500');
+      timerDisplay.classList.add('text-amber-400');
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `${timeLeft}s`;
+
+        if (timeLeft <= 5) {
+          timerDisplay.classList.remove('text-amber-400');
+          timerDisplay.classList.add('text-rose-500');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+    }
+
+    function handleTimeOut() {
+      const currentQ = currentQuestions[currentQuestionIndex];
+      userAnswers.push({
+        question: currentQ.question,
+        selected: null,
+        correct: currentQ.answer,
+        explanation: currentQ.explanation,
+        options: currentQ.options,
+        isCorrect: false
+      });
+
+      highlightAnswers(currentQ.answer, -1);
+      showExplanation(false, "Waktu habis! Kunci jawaban yang benar ditandai di atas.");
+    }
+
+    function selectOption(selectedIndex) {
+      clearInterval(timerInterval);
+
+      const currentQ = currentQuestions[currentQuestionIndex];
+      const isCorrect = selectedIndex === currentQ.answer;
+
+      if (isCorrect) {
+        correctAnswersCount++;
+      }
+
+      userAnswers.push({
+        question: currentQ.question,
+        selected: selectedIndex,
+        correct: currentQ.answer,
+        explanation: currentQ.explanation,
+        options: currentQ.options,
+        isCorrect: isCorrect
+      });
+
+      highlightAnswers(currentQ.answer, selectedIndex);
+      showExplanation(isCorrect, currentQ.explanation);
+    }
+
+    function highlightAnswers(correctIndex, selectedIndex) {
+      const buttons = optionsContainer.querySelectorAll('button');
+      
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-slate-700/60');
+
+        const icon = btn.querySelector('.option-icon');
+        icon.classList.remove('hidden');
+
+        if (idx === correctIndex) {
+          btn.classList.add('bg-emerald-950/60', 'border-emerald-500', 'text-emerald-200');
+          icon.classList.add('fa-solid', 'fa-circle-check', 'text-emerald-400');
+        } else if (idx === selectedIndex) {
+          btn.classList.add('bg-rose-950/60', 'border-rose-500', 'text-rose-200');
+          icon.classList.add('fa-solid', 'fa-circle-xmark', 'text-rose-400');
+        } else {
+          btn.classList.add('opacity-50');
+        }
+      });
+    }
+
+    function showExplanation(isCorrect, text) {
+      explanationBox.classList.remove('hidden');
+      if (isCorrect) {
+        explanationBox.className = "p-4 rounded-xl text-sm leading-relaxed border bg-emerald-950/30 border-emerald-500/40 text-emerald-200";
+        explanationText.innerHTML = `<strong>Jawaban Tepat!</strong> ${text}`;
+      } else {
+        explanationBox.className = "p-4 rounded-xl text-sm leading-relaxed border bg-rose-950/30 border-rose-500/40 text-rose-200";
+        explanationText.innerHTML = `<strong>Penjelasan:</strong> ${text}`;
+      }
+
+      nextBtn.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < currentQuestions.length) {
+        loadQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      clearInterval(timerInterval);
+      quizScreen.classList.add('hidden');
+      resultScreen.classList.remove('hidden');
+
+      const totalQuestions = currentQuestions.length;
+      const wrongCount = totalQuestions - correctAnswersCount;
+      
+      // Hitung skor akhir berskala 0 - 100
+      const finalScore = Math.round((correctAnswersCount / totalQuestions) * 100);
+
+      document.getElementById('final-score').textContent = finalScore;
+      document.getElementById('correct-count').textContent = `${correctAnswersCount} Soal`;
+      document.getElementById('wrong-count').textContent = `${wrongCount} Soal`;
+
+      // Logika High Score LocalStorage
+      const previousHighScore = getHighScore(currentCategory);
+      const recordBadge = document.getElementById('new-record-badge');
+      
+      if (finalScore > previousHighScore) {
+        setHighScore(currentCategory, finalScore);
+        recordBadge.classList.remove('hidden');
+      } else {
+        recordBadge.classList.add('hidden');
+      }
+
+      // Update UI Rekor di layar depan
+      updateHighScoreUI();
+
+      // Set Score Message
+      const messageElem = document.getElementById('score-message');
+
+      if (finalScore === 100) {
+        messageElem.textContent = "Sempurna! Kamu menguasai materi ini dengan baik! 🌟";
+      } else if (finalScore >= 75) {
+        messageElem.textContent = "Hebat! Hasil yang sangat memuaskan! 👍";
+      } else if (finalScore >= 50) {
+        messageElem.textContent = "Cukup baik! Pelajari lagi materi yang belum pas. 📚";
+      } else {
+        messageElem.textContent = "Jangan berkecil hati, ayo berlatih lagi! 💪";
+      }
+    }
+
+    function showReview() {
+      const reviewSection = document.getElementById('review-section');
+      const reviewList = document.getElementById('review-list');
+      const reviewBtn = document.getElementById('review-btn');
+
+      if (!reviewSection.classList.contains('hidden')) {
+        reviewSection.classList.add('hidden');
+        reviewBtn.querySelector('span').textContent = "Lihat Pembahasan";
+        return;
+      }
+
+      reviewList.innerHTML = '';
+      userAnswers.forEach((ans, idx) => {
+        const item = document.createElement('div');
+        item.className = `p-3 rounded-lg text-xs space-y-1.5 border ${
+          ans.isCorrect ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-rose-950/20 border-rose-500/30'
+        }`;
+
+        const userSelectedText = ans.selected !== null ? ans.options[ans.selected] : "Tidak Dijawab (Waktu Habis)";
+        const correctText = ans.options[ans.correct];
+
+        item.innerHTML = `
+          <p class="font-semibold text-slate-200">${idx + 1}. ${ans.question}</p>
+          <div class="flex flex-col space-y-1 text-slate-400">
+            <p>Jawaban Anda: <span class="${ans.isCorrect ? 'text-emerald-400 font-medium' : 'text-rose-400 font-medium'}">${userSelectedText}</span></p>
+            ${!ans.isCorrect ? `<p>Kunci Jawaban: <span class="text-emerald-400 font-medium">${correctText}</span></p>` : ''}
+            <p class="text-slate-500 pt-1 border-t border-slate-700/50">${ans.explanation}</p>
+          </div>
+        `;
+        reviewList.appendChild(item);
+      });
+
+      reviewSection.classList.remove('hidden');
+      reviewBtn.querySelector('span').textContent = "Sembunyikan Pembahasan";
+    }
+
+    function resetQuiz() {
+      clearInterval(timerInterval);
+      document.getElementById('restart-btn-header').classList.add('hidden');
+      document.getElementById('review-section').classList.add('hidden');
+      resultScreen.classList.add('hidden');
+      quizScreen.classList.add('hidden');
+      categoryScreen.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
